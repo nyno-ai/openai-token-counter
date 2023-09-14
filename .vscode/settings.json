@@ -1,0 +1,10 @@
+{
+  "python.testing.pytestArgs": [
+    "--typeguard-packages=nynoflow",
+    "--cov",
+    "--cov-report=xml",
+    "tests"
+  ],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
+}
