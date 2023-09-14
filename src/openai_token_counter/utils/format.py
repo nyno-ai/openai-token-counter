@@ -11,6 +11,14 @@ from openai_token_counter.chat_objects import (
 
 
 def format_function_definitions(functions: list[OpenAIFunction]) -> str:
+    """Format the function definitions to a string.
+
+    Args:
+        functions (list[OpenAIFunction]): The list of functions to format.
+
+    Returns:
+        str: The formatted string.
+    """
     lines = ["namespace functions {", ""]
 
     for f in functions:
@@ -37,16 +45,27 @@ def format_function_definitions(functions: list[OpenAIFunction]) -> str:
 
 
 def format_object_properties(obj: ObjectProp, indent: int) -> str:
+    """Format the object properties to a string.
+
+    Args:
+        obj (ObjectProp): The object to format.
+        indent (int): The indentation level.
+
+    Returns:
+        str: The formatted string.
+    """
     if obj.properties is None:
         return ""
 
     lines = []
 
+    required_params = obj.required or []
+
     for name, param in obj.properties.items():
         if param.description and indent < 2:
             lines.append(f"// {param.description}")
 
-        if obj.required and name:
+        if name in required_params:
             lines.append(f"{name}: {format_type(param, indent)},")
         else:
             lines.append(f"{name}?: {format_type(param, indent)},")
@@ -55,9 +74,18 @@ def format_object_properties(obj: ObjectProp, indent: int) -> str:
 
 
 def format_type(param: PropItem, indent: int) -> str:
+    """Format the type to a string.
+
+    Args:
+        param (PropItem): The parameter to format.
+        indent (int): The indentation level.
+
+    Returns:
+        str: The formatted string.
+    """
     if isinstance(param, StringProp):
         if param.enum:
-            return " | ".join(f'"{v}"' for v in param.enum)
+            return " | ".join(f'"{v}"' for v in param.enum)  # noqa: B907
         return "string"
 
     if isinstance(param, NumberProp):
