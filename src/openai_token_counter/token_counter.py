@@ -1,9 +1,16 @@
-from .chat_objects import OpenAIMessage, OpenAIFunction, FunctionCall
-from tiktoken import encoding_for_model, get_encoding
-from typing import Optional
-from openai_token_counter.utils.format import format_function_definitions
-from attrs import define, field
 from copy import deepcopy
+from typing import Optional
+
+from attrs import define
+from attrs import field
+from tiktoken import encoding_for_model
+from tiktoken import get_encoding
+
+from openai_token_counter.utils.format import format_function_definitions
+
+from .chat_objects import OpenAIFunction
+from .chat_objects import OpenAIMessage
+from .chat_objects import OpenAIRequest
 
 
 @define
@@ -16,22 +23,19 @@ class TokenCounter:
 
     model: Optional[str] = field(default=None)
 
-    def prompt_tokens_estimate(
-        self,
-        messages: list[OpenAIMessage],
-        functions: Optional[list[OpenAIFunction]] = None,
-        function_call: Optional[FunctionCall] = None,
-    ) -> int:
+    def estimate_token_count(self, request: OpenAIRequest) -> int:
         """Estimate the number of tokens a prompt will use.
 
         Args:
-            messages (list[OpenAIMessage]): OpenAI chat messages.
-            functions (Optional[list[OpenAIFunction]]): OpenAI function definitions.
-            function_call (Optional[str]): Function call type ("none", "auto", or FunctionCall object).
+            request (OpenAIRequest): The request to estimate the token count for.
 
         Returns:
             int: An estimate for the number of tokens the prompt will use.
         """
+        messages = request.messages
+        functions = request.functions
+        function_call = request.function_call
+
         padded_system = False
         tokens = 0
 
@@ -55,14 +59,14 @@ class TokenCounter:
             tokens -= 4
 
         # If function_call is 'none', add one token.
-        # If it's a FunctionCall object, add 4 + the number of tokens in the function name.
+        # If it's a OpenAIFunctionCall object, add 4 + the number of tokens in the function name.
         # If it's undefined or 'auto', don't add anything.
         if function_call and function_call != "auto":
             if function_call == "none":
                 tokens += 1
 
             else:
-                tokens += self.string_tokens(function_call.name) + 4
+                tokens += self.string_tokens(function_call["name"]) + 4
 
         return tokens
 

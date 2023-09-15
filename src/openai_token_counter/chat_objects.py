@@ -1,5 +1,9 @@
 from __future__ import annotations
-from typing import Optional, Literal, Union
+
+from typing import Literal
+from typing import Optional
+from typing import Union
+
 from pydantic import BaseModel
 
 
@@ -63,12 +67,12 @@ class OpenAIFunction(BaseModel):
     """This is the function object for the OpenAI request."""
 
     name: str
-    description: Optional[str]
+    description: Optional[str] = None
     parameters: OpenAIFunctionParameters
 
 
-class FunctionCall(BaseModel):
-    """This is the function call object for the OpenAI API."""
+class OpenAIFunctionCall(BaseModel):
+    """This is the function call object that is used in messages."""
 
     name: str
     arguments: str  # Json string
@@ -78,6 +82,22 @@ class OpenAIMessage(BaseModel):
     """This is the message object for the OpenAI API."""
 
     role: str
-    content: Optional[str]  # Optional in case of function response
-    name: Optional[str]
-    function_call: Optional[FunctionCall]
+    content: Optional[str] = None  # Optional in case of function response
+    name: Optional[str] = None
+    function_call: Optional[OpenAIFunctionCall] = None
+
+
+class OpenAIRequest(BaseModel):
+    """This is the request object for the OpenAI API."""
+
+    messages: list[OpenAIMessage]
+    functions: Optional[list[OpenAIFunction]] = None
+
+    # Function call can be either:
+    # None: defaults to "auto" behind the scenes
+    # "auto": Call or no call whatever function
+    # "none": Don't call any function
+    # dict {"name": "my_func"}: Call the function named "my_func"
+    function_call: Optional[
+        Union[Literal["auto", "none"], dict[Literal["name"], str]]
+    ] = None
