@@ -80,7 +80,7 @@ class OpenAIMessage(BaseModel):
     """This is the message object for the OpenAI API."""
 
     role: str
-    content: Optional[str] = None  # Optional in case of function response
+    content: Optional[str] = None  # Optional in case of] function response
     name: Optional[str] = None
     function_call: Optional[OpenAIFunctionCall] = None
 
