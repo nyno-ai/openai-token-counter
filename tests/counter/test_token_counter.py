@@ -1,6 +1,6 @@
 import time
 
-import openai
+import openai  # type: ignore
 
 from openai_token_counter import token_counter
 from tests.conftest import ConfigTests
