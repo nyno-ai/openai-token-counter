@@ -6,11 +6,11 @@ from attrs import field
 from tiktoken import encoding_for_model
 from tiktoken import get_encoding
 
-from openai_token_counter.utils.format import format_function_definitions
+from openai_token_counter.format import format_function_definitions
 
-from .chat_objects import OpenAIFunction
-from .chat_objects import OpenAIMessage
-from .chat_objects import OpenAIRequest
+from .models import OpenAIFunction
+from .models import OpenAIMessage
+from .models import OpenAIRequest
 
 
 @define

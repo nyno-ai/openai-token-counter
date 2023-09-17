@@ -2,7 +2,7 @@ import time
 
 import openai
 
-from openai_token_counter.chat_objects import OpenAIRequest
+from openai_token_counter.models import OpenAIRequest
 from openai_token_counter.token_counter import TokenCounter
 from tests.conftest import ConfigTests
 

@@ -1,11 +1,11 @@
-from openai_token_counter.chat_objects import ArrayProp
-from openai_token_counter.chat_objects import BoolProp
-from openai_token_counter.chat_objects import NullProp
-from openai_token_counter.chat_objects import NumberProp
-from openai_token_counter.chat_objects import ObjectProp
-from openai_token_counter.chat_objects import OpenAIFunction
-from openai_token_counter.chat_objects import PropItem
-from openai_token_counter.chat_objects import StringProp
+from openai_token_counter.models import ArrayProp
+from openai_token_counter.models import BoolProp
+from openai_token_counter.models import NullProp
+from openai_token_counter.models import NumberProp
+from openai_token_counter.models import ObjectProp
+from openai_token_counter.models import OpenAIFunction
+from openai_token_counter.models import PropItem
+from openai_token_counter.models import StringProp
 
 
 def format_function_definitions(functions: list[OpenAIFunction]) -> str:
