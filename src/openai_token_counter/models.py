@@ -9,39 +9,39 @@ class StringProp(BaseModel):
     """This is the property object for the OpenAI functions."""
 
     type: Literal["string"]
-    description: Optional[str] = None
-    enum: Optional[list[str]] = None
+    description: str | None = None
+    enum: list[str] | None = None
 
 
 class NumberProp(BaseModel):
     """This is the property object for the OpenAI functions."""
 
     type: Literal["integer", "number"]
-    description: Optional[str] = None
-    minimum: Optional[int] = None
-    maximum: Optional[int] = None
-    enum: Optional[list[str]] = None
+    description: str | None = None
+    minimum: int | None = None
+    maximum: int | None = None
+    enum: list[str] | None = None
 
 
 class BoolProp(BaseModel):
     """This is the property object for the OpenAI functions."""
 
     type: Literal["boolean"]
-    description: Optional[str] = None
+    description: str | None = None
 
 
 class NullProp(BaseModel):
     """This is the property object for the OpenAI functions."""
 
     type: Literal["null"]
-    description: Optional[str] = None
+    description: str | None = None
 
 
 class ArrayProp(BaseModel):
     """This is the property object for the OpenAI functions."""
 
     type: Literal["array"]
-    description: Optional[str] = None
+    description: str | None = None
     items: PropItem
 
 
@@ -49,9 +49,9 @@ class ObjectProp(BaseModel):
     """This is the property object for the OpenAI functions."""
 
     type: Literal["object"]
-    description: Optional[str] = None
-    required: Optional[list[str]] = None
-    properties: Optional[dict[str, PropItem]] = None
+    description: str | None = None
+    required: list[str] | None = None
+    properties: dict[str, PropItem] | None = None
 
 
 PropItem = Union[StringProp, NumberProp, BoolProp, NullProp, ArrayProp, ObjectProp]
@@ -65,7 +65,7 @@ class OpenAIFunction(BaseModel):
     """This is the function object for the OpenAI request."""
 
     name: str
-    description: Optional[str] = None
+    description: str | None = None
     parameters: OpenAIFunctionParameters
 
 
@@ -80,22 +80,22 @@ class OpenAIMessage(BaseModel):
     """This is the message object for the OpenAI API."""
 
     role: str
-    content: Optional[str] = None  # Optional in case of] function response
-    name: Optional[str] = None
-    function_call: Optional[OpenAIFunctionCall] = None
+    content: str | None = None  # Optional in case of] function response
+    name: str | None = None
+    function_call: OpenAIFunctionCall | None = None
 
 
 class OpenAIRequest(BaseModel):
     """This is the request object for the OpenAI API."""
 
     messages: list[OpenAIMessage]
-    functions: Optional[list[OpenAIFunction]] = None
+    functions: list[OpenAIFunction] | None = None
 
     # Function call can be either:
     # None: defaults to "auto" behind the scenes
     # "auto": Call or no call whatever function
     # "none": Don't call any function
     # dict {"name": "my_func"}: Call the function named "my_func"
-    function_call: Optional[
-        Union[Literal["auto", "none"], dict[Literal["name"], str]]
-    ] = None
+    function_call: None | (
+        Literal["auto", "none"] | dict[Literal["name"], str]
+    ) = None

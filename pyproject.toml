@@ -51,9 +51,6 @@ openai = "^0.28.0"
 pytest = "^7.4.2"
 pytest-cov = "^4.1.0"
 
-[tool.poetry.scripts]
-openai-token-counter = "openai_token_counter.__main__:main"
-
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
 tests = ["tests", "*/tests"]
