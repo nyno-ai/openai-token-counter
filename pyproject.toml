@@ -19,7 +19,6 @@ Changelog = "https://github.com/Eitan1112/openai-token-counter/releases"
 python = "^3.9"
 pydantic = "^2.3.0"
 tiktoken = "^0.5.1"
-attrs = "^23.1.0"
 
 [tool.poetry.group.dev.dependencies]
 Pygments = "^2.16.1"
@@ -69,7 +68,6 @@ fail_under = 100
 
 [tool.isort]
 profile = "black"
-force_single_line = true
 lines_after_imports = 2
 
 [tool.mypy]
