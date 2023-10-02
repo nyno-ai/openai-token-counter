@@ -23,8 +23,8 @@ except ImportError:
 
 package = "openai_token_counter"
 python_versions = [
-    # "3.12"
-    # "3.11"
+    "3.12"
+    "3.11"
     "3.10",
     "3.9",
 ]
