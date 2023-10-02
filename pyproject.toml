@@ -18,10 +18,7 @@ Changelog = "https://github.com/Eitan1112/openai-token-counter/releases"
 [tool.poetry.dependencies]
 python = "^3.9"
 pydantic = "^2.3.0"
-pytest = "^7.4.2"
-pytest-cov = "^4.1.0"
 tiktoken = "^0.5.1"
-attrs = "^23.1.0"
 
 [tool.poetry.group.dev.dependencies]
 Pygments = "^2.16.1"
@@ -39,8 +36,6 @@ mypy = "^1.5.1"
 pep8-naming = "^0.13.3"
 pre-commit = "^3.3.3"
 pre-commit-hooks = "^4.4.0"
-pytest = "^7.4.0"
-pyupgrade = "^3.10.1"
 safety = "^2.3.5"
 sphinx = "^7.2.2"
 sphinx-autobuild = "^2021.3.14"
@@ -51,11 +46,10 @@ nox-poetry = "^1.0.3"
 typeguard = "^4.1.2"
 pytest-mock = "^3.11.1"
 python-dotenv = "^1.0.0"
-pytest-cov = "^4.1.0"
 openai = "^0.28.0"
-
-[tool.poetry.scripts]
-openai-token-counter = "openai_token_counter.__main__:main"
+pytest = "^7.4.2"
+pytest-cov = "^4.1.0"
+pyupgrade = "^3.13.0"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
@@ -71,7 +65,6 @@ fail_under = 100
 
 [tool.isort]
 profile = "black"
-force_single_line = true
 lines_after_imports = 2
 
 [tool.mypy]
@@ -84,5 +77,5 @@ show_error_context = true
 disable_error_code = "no-untyped-call"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=1.5.1"]
 build-backend = "poetry.core.masonry.api"

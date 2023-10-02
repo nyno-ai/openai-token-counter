@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from typing import Literal
-from typing import Optional
-from typing import Union
+from typing import Literal, Optional, Union
 
 from pydantic import BaseModel
 
@@ -82,7 +80,7 @@ class OpenAIMessage(BaseModel):
     """This is the message object for the OpenAI API."""
 
     role: str
-    content: Optional[str] = None  # Optional in case of function response
+    content: Optional[str] = None  # Optional in case of] function response
     name: Optional[str] = None
     function_call: Optional[OpenAIFunctionCall] = None
 
