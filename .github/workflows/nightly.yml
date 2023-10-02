@@ -82,7 +82,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           nox --python=${{ matrix.python }}
-          
+
       - name: Upload coverage data
         if: always() && matrix.session == 'tests'
         uses: "actions/upload-artifact@v3"

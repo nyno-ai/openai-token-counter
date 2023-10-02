@@ -25,12 +25,10 @@ https://github.com/hmarr/openai-chat-tokens
 
 As stated in hmarr project:
 
-
->Estimating token usage for chat completions isn't quite as easy as it sounds.
->For regular chat messages, you need to consider how the messages are formatted by OpenAI when they're provided to the model, as they don't simply dump the JSON messages they receive via the API into the model.
->For function calling, things are even more complex, as the OpenAPI-style function definitions get rewritten into TypeScript type definitions.
->This library handles both of those cases, as well as a minor adjustment needed for handling the results of function calling. tiktoken is used to do the tokenization.
-
+> Estimating token usage for chat completions isn't quite as easy as it sounds.
+> For regular chat messages, you need to consider how the messages are formatted by OpenAI when they're provided to the model, as they don't simply dump the JSON messages they receive via the API into the model.
+> For function calling, things are even more complex, as the OpenAPI-style function definitions get rewritten into TypeScript type definitions.
+> This library handles both of those cases, as well as a minor adjustment needed for handling the results of function calling. tiktoken is used to do the tokenization.
 
 This library is tested nightly againts the openai API to detect for potential breaks if any internal change is made by openai, because as stated above we implement token calculation based on internal OpenAI techniques that are not exposed and can potentially change without notice.
 
@@ -75,20 +73,23 @@ print(result) # Output: '57'
 
 ## Contributing
 
-Contributions are very welcome. 
+Contributions are very welcome.
 
 1. Install poetry
 2. Install the project dependencies
+
 ```bash
 poetry install
 ```
+
 3. Make the changes
 4. Test locally using nox (no need to test all python versions, select only 3.10):
+
 ```
 nox --python=3.10
 ```
-5. Create a PR in GitHub.
 
+5. Create a PR in GitHub.
 
 ## License
 
