@@ -1,7 +1,7 @@
 import time
 
-import openai  # type: ignore
-from openai.error import APIConnectionError, ServiceUnavailableError  # type: ignore
+import openai
+from openai.error import APIConnectionError, ServiceUnavailableError
 
 from openai_token_counter import token_counter
 from tests.conftest import ConfigTests

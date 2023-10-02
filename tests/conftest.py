@@ -2,7 +2,7 @@ import os
 from typing import TypedDict
 
 import pytest
-from dotenv import load_dotenv  # type: ignore
+from dotenv import load_dotenv
 
 
 class ConfigTests(TypedDict):
