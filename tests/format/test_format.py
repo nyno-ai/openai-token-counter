@@ -1,5 +1,5 @@
-from openai_token_counter.chat_objects import OpenAIFunction
-from openai_token_counter.utils.format import format_function_definitions
+from openai_token_counter.format import format_function_definitions
+from openai_token_counter.models import OpenAIFunction
 
 
 def test_format_function_definitions() -> None:

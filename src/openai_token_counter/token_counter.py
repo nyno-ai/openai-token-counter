@@ -1,19 +1,15 @@
 from copy import deepcopy
+from dataclasses import dataclass, field
 from typing import Optional
 
-from attrs import define
-from attrs import field
-from tiktoken import encoding_for_model
-from tiktoken import get_encoding
+from tiktoken import encoding_for_model, get_encoding
 
-from openai_token_counter.utils.format import format_function_definitions
+from openai_token_counter.format import format_function_definitions
 
-from .chat_objects import OpenAIFunction
-from .chat_objects import OpenAIMessage
-from .chat_objects import OpenAIRequest
+from .models import OpenAIFunction, OpenAIMessage, OpenAIRequest
 
 
-@define
+@dataclass
 class TokenCounter:
     """Token counter class.
 
@@ -45,7 +41,7 @@ class TokenCounter:
                 if message_copy.content:
                     message_copy.content += "\n"
                 padded_system = True
-            tokens += self.estimate_message_token_count(message_copy)
+            tokens += self.estimate_tokens_in_messages(message_copy)
 
         # Each completion (vs message) seems to carry a 3-token overhead
         tokens += 3
@@ -65,7 +61,7 @@ class TokenCounter:
             if function_call == "none":
                 tokens += 1
 
-            else:
+            elif isinstance(function_call, dict) and "name" in function_call:
                 tokens += self.string_tokens(function_call["name"]) + 4
 
         return tokens
@@ -86,7 +82,7 @@ class TokenCounter:
 
         return len(encoding.encode(string))
 
-    def estimate_message_token_count(self, message: OpenAIMessage) -> int:
+    def estimate_tokens_in_messages(self, message: OpenAIMessage) -> int:
         """Estimate token count for a single message.
 
         Args:

@@ -10,8 +10,7 @@ import nox
 
 
 try:
-    from nox_poetry import Session
-    from nox_poetry import session
+    from nox_poetry import Session, session
 except ImportError:
     message = f"""\
     Nox failed to import the 'nox-poetry' package.
@@ -23,7 +22,10 @@ except ImportError:
 
 
 package = "openai_token_counter"
-python_versions = ["3.10", "3.9", "3.8", "3.7"]
+default_python_version = (
+    "3.10"  # To be used in sessions where we don't run all python versions
+)
+python_versions = ["3.11", "3.10", "3.9"]
 nox.needs_version = ">= 2021.6.6"
 nox.options.sessions = (
     "pre-commit",
@@ -110,7 +112,7 @@ def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
                 break
 
 
-@session(name="pre-commit", python=python_versions[0])
+@session(name="pre-commit", python=default_python_version)
 def precommit(session: Session) -> None:
     """Lint using pre-commit."""
     args = session.posargs or [
@@ -138,11 +140,12 @@ def precommit(session: Session) -> None:
         activate_virtualenv_in_precommit_hooks(session)
 
 
-@session(python=python_versions[0])
+@session(python=default_python_version)
 def safety(session: Session) -> None:
     """Scan dependencies for insecure packages."""
     requirements = session.poetry.export_requirements()
-    session.install("safety")
+    session.install("-r", str(requirements))
+
     session.run("safety", "check", "--full-report", f"--file={requirements}")
 
 
@@ -151,7 +154,10 @@ def mypy(session: Session) -> None:
     """Type-check using mypy."""
     args = session.posargs or ["src", "tests", "docs/conf.py"]
     session.install(".")
-    session.install("mypy", "pytest")
+
+    requirements = session.poetry.export_requirements()
+    session.install("-r", str(requirements))
+
     session.run("mypy", *args)
     if not session.posargs:
         session.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")
@@ -161,7 +167,10 @@ def mypy(session: Session) -> None:
 def tests(session: Session) -> None:
     """Run the test suite."""
     session.install(".")
-    session.install("coverage[toml]", "pytest", "pygments")
+
+    requirements = session.poetry.export_requirements()
+    session.install("-r", str(requirements))
+
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
     finally:
@@ -169,12 +178,12 @@ def tests(session: Session) -> None:
             session.notify("coverage", posargs=[])
 
 
-@session(python=python_versions[0])
+@session(python=default_python_version)
 def coverage(session: Session) -> None:
     """Produce the coverage report."""
     args = session.posargs or ["report"]
-
-    session.install("coverage[toml]")
+    requirements = session.poetry.export_requirements()
+    session.install("-r", str(requirements))
 
     if not session.posargs and any(Path().glob(".coverage.*")):
         session.run("coverage", "combine")
@@ -182,11 +191,13 @@ def coverage(session: Session) -> None:
     session.run("coverage", *args)
 
 
-@session(python=python_versions[0])
+@session(python=default_python_version)
 def typeguard(session: Session) -> None:
     """Runtime type checking using Typeguard."""
     session.install(".")
-    session.install("pytest", "typeguard", "pygments")
+    requirements = session.poetry.export_requirements()
+    session.install("-r", str(requirements))
+
     session.run("pytest", f"--typeguard-packages={package}", *session.posargs)
 
 
@@ -201,11 +212,13 @@ def xdoctest(session: Session) -> None:
             args.append("--colored=1")
 
     session.install(".")
-    session.install("xdoctest[colors]")
+    requirements = session.poetry.export_requirements()
+    session.install("-r", str(requirements))
+
     session.run("python", "-m", "xdoctest", *args)
 
 
-@session(name="docs-build", python=python_versions[0])
+@session(name="docs-build", python=default_python_version)
 def docs_build(session: Session) -> None:
     """Build the documentation."""
     args = session.posargs or ["docs", "docs/_build"]
@@ -213,7 +226,8 @@ def docs_build(session: Session) -> None:
         args.insert(0, "--color")
 
     session.install(".")
-    session.install("sphinx", "sphinx-click", "furo", "myst-parser")
+    requirements = session.poetry.export_requirements()
+    session.install("-r", str(requirements))
 
     build_dir = Path("docs", "_build")
     if build_dir.exists():
@@ -222,12 +236,13 @@ def docs_build(session: Session) -> None:
     session.run("sphinx-build", *args)
 
 
-@session(python=python_versions[0])
+@session(python=default_python_version)
 def docs(session: Session) -> None:
     """Build and serve the documentation with live reloading on file changes."""
     args = session.posargs or ["--open-browser", "docs", "docs/_build"]
     session.install(".")
-    session.install("sphinx", "sphinx-autobuild", "sphinx-click", "furo", "myst-parser")
+    requirements = session.poetry.export_requirements()
+    session.install("-r", str(requirements))
 
     build_dir = Path("docs", "_build")
     if build_dir.exists():
