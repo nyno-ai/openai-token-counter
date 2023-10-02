@@ -5,7 +5,6 @@
 [![Python Version](https://img.shields.io/pypi/pyversions/openai-token-counter)][python version]
 [![License](https://img.shields.io/pypi/l/openai-token-counter)][license]
 
-[![Read the documentation at https://openai-token-counter.readthedocs.io/](https://img.shields.io/readthedocs/openai-token-counter/latest.svg?label=Read%20the%20Docs)][read the docs]
 [![Tests](https://github.com/Eitan1112/openai-token-counter/workflows/Tests/badge.svg)][tests]
 [![Codecov](https://codecov.io/gh/Eitan1112/openai-token-counter/branch/main/graph/badge.svg)][codecov]
 
@@ -15,23 +14,22 @@
 [pypi_]: https://pypi.org/project/openai-token-counter/
 [status]: https://pypi.org/project/openai-token-counter/
 [python version]: https://pypi.org/project/openai-token-counter
-[read the docs]: https://openai-token-counter.readthedocs.io/
 [tests]: https://github.com/Eitan1112/openai-token-counter/actions?workflow=Tests
 [codecov]: https://app.codecov.io/gh/Eitan1112/openai-token-counter
 [pre-commit]: https://github.com/pre-commit/pre-commit
 [black]: https://github.com/psf/black
 
-Count tokens for OpenAI messages with function support accurately.
+Token counter for OpenAI messages with support for function token calculation.
 This project was ported to python based on the following repository:
 https://github.com/hmarr/openai-chat-tokens
 
-## Features
-
-- TODO
-
-## Requirements
-
-- TODO
+As stated in hmarr project:
+>
+Estimating token usage for chat completions isn't quite as easy as it sounds.
+For regular chat messages, you need to consider how the messages are formatted by OpenAI when they're provided to the model, as they don't simply dump the JSON messages they receive via the API into the model.
+For function calling, things are even more complex, as the OpenAPI-style function definitions get rewritten into TypeScript type definitions.
+This library handles both of those cases, as well as a minor adjustment needed for handling the results of function calling. tiktoken is used to do the tokenization.
+>
 
 ## Installation
 
@@ -43,7 +41,60 @@ $ pip install openai-token-counter
 
 ## Usage
 
-Please see the [Command-line Reference] for details.
+```python
+messages = [{"role": "user", "content": "hello"}]
+
+functions = [
+    {
+        "name": "get_recipe",
+        "parameters": {
+            "type": "object",
+            "required": ["ingredients", "instructions", "time_to_cook"],
+            "properties": {
+                "ingredients": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": ["name", "unit", "amount"],
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                            },
+                            "unit": {
+                                "enum": [
+                                    "grams",
+                                    "ml",
+                                    "cups",
+                                    "pieces",
+                                    "teaspoons",
+                                ],
+                                "type": "string",
+                            },
+                            "amount": {
+                                "type": "number",
+                            },
+                        },
+                    },
+                },
+                "instructions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                    },
+                    "description": "Steps to prepare the recipe (no numbering)",
+                },
+                "time_to_cook": {
+                    "type": "number",
+                    "description": "Total time to prepare the recipe in minutes",
+                }
+            }
+        }
+    }
+]
+
+
+
+```
 
 ## Contributing
 
