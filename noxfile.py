@@ -1,7 +1,6 @@
 """Nox sessions."""
 import os
 import shlex
-import shutil
 import sys
 from pathlib import Path
 from textwrap import dedent
