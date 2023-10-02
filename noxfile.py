@@ -25,7 +25,7 @@ package = "openai_token_counter"
 default_python_version = (
     "3.10"  # To be used in sessions where we don't run all python versions
 )
-python_versions = ["3.12", "3.11", "3.10", "3.9"]
+python_versions = ["3.12.0-rc.3", "3.11", "3.10", "3.9"]
 nox.needs_version = ">= 2021.6.6"
 nox.options.sessions = (
     "pre-commit",
