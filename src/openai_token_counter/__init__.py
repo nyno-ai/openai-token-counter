@@ -4,7 +4,7 @@ from .models import OpenAIRequest
 from .token_counter import TokenCounter
 
 
-def token_counter(
+def openai_token_counter(
     messages: list[dict[str, Any]],
     model: Optional[str] = None,
     functions: Optional[list[dict[str, Any]]] = None,

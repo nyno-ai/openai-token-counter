@@ -5,7 +5,6 @@
 [![Python Version](https://img.shields.io/pypi/pyversions/openai-token-counter)][python version]
 [![License](https://img.shields.io/pypi/l/openai-token-counter)][license]
 
-[![Read the documentation at https://openai-token-counter.readthedocs.io/](https://img.shields.io/readthedocs/openai-token-counter/latest.svg?label=Read%20the%20Docs)][read the docs]
 [![Tests](https://github.com/Eitan1112/openai-token-counter/workflows/Tests/badge.svg)][tests]
 [![Codecov](https://codecov.io/gh/Eitan1112/openai-token-counter/branch/main/graph/badge.svg)][codecov]
 
@@ -15,23 +14,23 @@
 [pypi_]: https://pypi.org/project/openai-token-counter/
 [status]: https://pypi.org/project/openai-token-counter/
 [python version]: https://pypi.org/project/openai-token-counter
-[read the docs]: https://openai-token-counter.readthedocs.io/
 [tests]: https://github.com/Eitan1112/openai-token-counter/actions?workflow=Tests
 [codecov]: https://app.codecov.io/gh/Eitan1112/openai-token-counter
 [pre-commit]: https://github.com/pre-commit/pre-commit
 [black]: https://github.com/psf/black
 
-Count tokens for OpenAI messages with function support accurately.
+Token counter for OpenAI messages with support for function token calculation.
 This project was ported to python based on the following repository:
 https://github.com/hmarr/openai-chat-tokens
 
-## Features
+As stated in hmarr project:
 
-- TODO
+> Estimating token usage for chat completions isn't quite as easy as it sounds.
+> For regular chat messages, you need to consider how the messages are formatted by OpenAI when they're provided to the model, as they don't simply dump the JSON messages they receive via the API into the model.
+> For function calling, things are even more complex, as the OpenAPI-style function definitions get rewritten into TypeScript type definitions.
+> This library handles both of those cases, as well as a minor adjustment needed for handling the results of function calling. tiktoken is used to do the tokenization.
 
-## Requirements
-
-- TODO
+This library is tested nightly againts the openai API to detect for potential breaks if any internal change is made by openai, because as stated above we implement token calculation based on internal OpenAI techniques that are not exposed and can potentially change without notice.
 
 ## Installation
 
@@ -43,16 +42,58 @@ $ pip install openai-token-counter
 
 ## Usage
 
-Please see the [Command-line Reference] for details.
+```python
+from openai_token_counter import openai_token_counter
+
+messages = [{"role": "user", "content": "hello"}]
+functions = [
+    {
+        "name": "bing_bong",
+        "description": "Do a bing bong",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "foo": {"type": "string"},
+                "bar": {"type": "number", "description": "A number"},
+            }
+        }
+    }
+]
+
+result = openai_token_counter(
+    messages=messages,
+    model="gpt-3.5-turbo", # Optional, deafults to cl100k_base encoding which is used by GPT models
+    functions=functions, # Optional
+    function_call="auto" # Optional
+)
+
+print(result) # Output: '57'
+
+```
 
 ## Contributing
 
 Contributions are very welcome.
-To learn more, see the [Contributor Guide].
+
+1. Install poetry
+2. Install the project dependencies
+
+```bash
+poetry install
+```
+
+3. Make the changes
+4. Test locally using nox (no need to test all python versions, select only 3.10):
+
+```
+nox --python=3.10
+```
+
+5. Create a PR in GitHub.
 
 ## License
 
-Distributed under the terms of the [Apache 2.0 license][license],
+Distributed under the terms of the [MIT][license],
 _OpenAI Token Counter_ is free and open source software.
 
 ## Issues
@@ -60,18 +101,6 @@ _OpenAI Token Counter_ is free and open source software.
 If you encounter any problems,
 please [file an issue] along with a detailed description.
 
-## Credits
-
-This project was generated from [@cjolowicz]'s [Hypermodern Python Cookiecutter] template.
-
-[@cjolowicz]: https://github.com/cjolowicz
-[pypi]: https://pypi.org/
-[hypermodern python cookiecutter]: https://github.com/cjolowicz/cookiecutter-hypermodern-python
-[file an issue]: https://github.com/Eitan1112/openai-token-counter/issues
-[pip]: https://pip.pypa.io/
-
 <!-- github-only -->
 
 [license]: https://github.com/Eitan1112/openai-token-counter/blob/main/LICENSE
-[contributor guide]: https://github.com/Eitan1112/openai-token-counter/blob/main/CONTRIBUTING.md
-[command-line reference]: https://openai-token-counter.readthedocs.io/en/latest/usage.html

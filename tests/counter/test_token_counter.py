@@ -3,7 +3,7 @@ import time
 import openai
 from openai.error import APIConnectionError, APIError, ServiceUnavailableError
 
-from openai_token_counter import token_counter
+from openai_token_counter import openai_token_counter
 from tests.conftest import ConfigTests
 from tests.counter.resources import test_cases_raw
 
@@ -37,7 +37,7 @@ def test_token_counter(config: ConfigTests) -> None:
 
                 response = openai.ChatCompletion.create(**params)
 
-                calculated_tokens = token_counter(
+                calculated_tokens = openai_token_counter(
                     messages=test_case["messages"],
                     model=MODEL,
                     functions=test_case.get("functions"),
