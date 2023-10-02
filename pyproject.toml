@@ -36,7 +36,6 @@ mypy = "^1.5.1"
 pep8-naming = "^0.13.3"
 pre-commit = "^3.3.3"
 pre-commit-hooks = "^4.4.0"
-pyupgrade = "^3.10.1"
 safety = "^2.3.5"
 sphinx = "^7.2.2"
 sphinx-autobuild = "^2021.3.14"
@@ -50,6 +49,7 @@ python-dotenv = "^1.0.0"
 openai = "^0.28.0"
 pytest = "^7.4.2"
 pytest-cov = "^4.1.0"
+pyupgrade = "^3.13.0"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
@@ -77,5 +77,5 @@ show_error_context = true
 disable_error_code = "no-untyped-call"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=1.5.1"]
 build-backend = "poetry.core.masonry.api"
