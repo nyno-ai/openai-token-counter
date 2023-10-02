@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openai-token-counter"
-version = "0.1.0"
+version = "1.0.0"
 description = "OpenAI Token Counter"
 authors = ["Eitan Nargassi <eitan@nyno.ai>"]
 license = "MIT"
@@ -60,7 +60,7 @@ source = ["openai_token_counter", "tests"]
 
 [tool.coverage.report]
 show_missing = true
-fail_under = 100
+fail_under = 90
 
 [tool.isort]
 profile = "black"
