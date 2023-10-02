@@ -5,7 +5,6 @@
 /.python-version
 /.pytype/
 /dist/
-/docs/_build/
 /src/*.egg-info/
 __pycache__/
 .env*
