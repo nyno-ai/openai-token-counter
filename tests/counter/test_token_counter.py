@@ -1,7 +1,7 @@
 import time
 
 import openai
-from openai.error import APIConnectionError, ServiceUnavailableError, APIError
+from openai.error import APIConnectionError, APIError, ServiceUnavailableError
 
 from openai_token_counter import token_counter
 from tests.conftest import ConfigTests
