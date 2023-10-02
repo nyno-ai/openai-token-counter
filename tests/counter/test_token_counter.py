@@ -1,7 +1,7 @@
 import time
 
 import openai
-from openai.error import APIConnectionError, ServiceUnavailableError
+from openai.error import APIConnectionError, ServiceUnavailableError, APIError
 
 from openai_token_counter import token_counter
 from tests.conftest import ConfigTests
@@ -50,7 +50,7 @@ def test_token_counter(config: ConfigTests) -> None:
                 assert response["usage"]["prompt_tokens"] == test_case["tokens"]
                 assert calculated_tokens == test_case["tokens"]
 
-            except (ServiceUnavailableError, APIConnectionError) as err:
+            except (ServiceUnavailableError, APIConnectionError, APIError) as err:
                 if attempt >= MAX_SERVICE_UNAVAILABLE_RETRY_ATTEMPTS:
                     raise Exception(
                         f"Failed to get response from OpenAI API after {attempt} attempts"
