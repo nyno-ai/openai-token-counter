@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openai-token-counter"
-version = "1.0.0"
+version = "1.0.1"
 description = "OpenAI Token Counter"
 authors = ["Eitan Nargassi <eitan@nyno.ai>"]
 license = "MIT"
