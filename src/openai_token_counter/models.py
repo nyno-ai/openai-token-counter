@@ -20,7 +20,7 @@ class NumberProp(BaseModel):
     description: Optional[str] = None
     minimum: Optional[int] = None
     maximum: Optional[int] = None
-    enum: Optional[list[str]] = None
+    enum: Optional[list[str | int]] = None
 
 
 class BoolProp(BaseModel):
